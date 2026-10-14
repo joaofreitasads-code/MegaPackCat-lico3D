@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 interface MarqueeItem {
   id?: string | number;
@@ -19,18 +19,6 @@ export const MarqueeSlider: React.FC<MarqueeSliderProps> = ({
   reverse = false,
   speedSeconds = 35,
 }) => {
-  const viewRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (viewRef.current) {
-      const scrollAmount = 320;
-      viewRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   // Double items to ensure seamless infinite loop for -50% translate3d
   const displayItems = [...items, ...items];
 
@@ -38,17 +26,7 @@ export const MarqueeSlider: React.FC<MarqueeSliderProps> = ({
 
   return (
     <div className="marquee" style={style}>
-      <button
-        className="mq-btn prev cursor-pointer z-20"
-        type="button"
-        aria-label="Anterior"
-        onClick={() => scroll('left')}
-      >
-        ‹
-      </button>
-
       <div
-        ref={viewRef}
         className="mq-view overflow-x-hidden scroll-smooth"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
@@ -77,15 +55,6 @@ export const MarqueeSlider: React.FC<MarqueeSliderProps> = ({
           ))}
         </div>
       </div>
-
-      <button
-        className="mq-btn next cursor-pointer z-20"
-        type="button"
-        aria-label="Próximo"
-        onClick={() => scroll('right')}
-      >
-        ›
-      </button>
     </div>
   );
 };
